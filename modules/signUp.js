@@ -7,7 +7,7 @@ const signup = function(database, email, password, username, callback) {
     let users = database.collection('users')
     let pw = password.toString()
     let hash = crypto.createHmac('sha256', secret).update(pw).digest('hex')
-    console.log('signUp 에서 hash 확인 : ', hash)
+    //console.log('signUp 에서 hash 확인 : ', hash)
 
     users.find({"email":email}).toArray(function(err, docs) {
         if (err) {

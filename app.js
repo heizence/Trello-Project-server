@@ -5,10 +5,16 @@ const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
 const authUser = require('./modules/authUser')
 const signUp = require('./modules/signUp')
+
 //const database = require('./db') // DB 관련 객체
-//const userRouter = require('./routes/user')
+
 const MongoClient = require('mongodb').MongoClient;
-let databaseUrl = 'mongodb://localhost:27017/local';
+const databaseUrl = 'mongodb://localhost:27017/local';
+const mongoose = require('mongoose')
+
+// 라우터
+const signout = require('./routes/signout')
+//const userRouter = require('./routes/user')
 
 const app = express();
 const port = 3001;
@@ -44,12 +50,13 @@ var connectDB = function() {
   })
 }
 
-// 로그인 처리
+// 로그인
 app.post('/users/signin', function(req, res) {
     console.log('login 요청 받음 : ', req.body)
 
     let email = req.body.email
     let password = req.body.password
+    let sess = req.session // 세션 설정
 
     if (database) {
         console.log('DB 연결됨')
@@ -59,17 +66,24 @@ app.post('/users/signin', function(req, res) {
             }
 
             if (docs) {
-                console.log(docs)
+                // console.log(docs)
                 let username = docs[0].username;
+                sess.email = email
 
+                //let result = {email: sess.email}
+
+                
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
                 res.write('Login Success!\n')
                 res.write('Email : ' + email + '\n') 
                 res.write('Password : ' + password + '\n')
                 res.write('Username : ' + username)
-                res.end()
+                res.end()                
+               
+               //res.status(200).send(result)
             }
             else {
+                console.log('로그인 됨')
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
                 res.write('Login Failed!' + '\n')
                 res.write('Check your Email and password again!' + '\n')
@@ -124,6 +138,8 @@ app.post('/users/signup', function(req, res) {
     res.end();
   }
 })
+
+app.use(signout)
 
 // 서버 실행
 app.listen(app.get('port'), function(req, res) {
