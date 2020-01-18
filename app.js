@@ -5,9 +5,10 @@ const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
 const authUser = require('./modules/authUser')
 const signUp = require('./modules/signUp')
-//const connectDB = require('./modules/connectDB')
-
+//const database = require('./db') // DB 관련 객체
 //const userRouter = require('./routes/user')
+const MongoClient = require('mongodb').MongoClient;
+let databaseUrl = 'mongodb://localhost:27017/local';
 
 const app = express();
 const port = 3001;
@@ -29,23 +30,19 @@ app.get('/', (req, res) => {
   console.log(`${port}번 포트에서 서버 실행됨`)
 })
 
-//DB 생성 및 연결 함수
-var MongoClient = require('mongodb').MongoClient;
+// DB 연결
 var database;
 
 var connectDB = function() {
-  let databaseUrl = 'mongodb://localhost:27017/local';
-
   MongoClient.connect(databaseUrl, function(err, db) {
     if (err) {
-      throw err;
+        throw err;
     }
     console.log('데이터베이스에 연결되었습니다. : ' + databaseUrl)
 
     database = db.db('local');
   })
 }
-
 
 // 로그인 처리
 app.post('/users/signin', function(req, res) {
@@ -67,7 +64,7 @@ app.post('/users/signin', function(req, res) {
 
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
                 res.write('Login Success!\n')
-                res.write('ID : ' + email + '\n') 
+                res.write('Email : ' + email + '\n') 
                 res.write('Password : ' + password + '\n')
                 res.write('Username : ' + username)
                 res.end()
@@ -75,7 +72,7 @@ app.post('/users/signin', function(req, res) {
             else {
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
                 res.write('Login Failed!' + '\n')
-                res.write('Check your ID and password again!' + '\n')
+                res.write('Check your Email and password again!' + '\n')
                 res.end();
             }
         })
@@ -93,13 +90,13 @@ app.post('/users/signin', function(req, res) {
 app.post('/users/signup', function(req, res) {
   console.log('회원가입 요청 받음 : ', req.body)
 
-  let Id = req.body.email
+  let email = req.body.email
   let password = req.body.password
   let username = req.body.username
 
   if (database) {
     console.log('DB 연결됨')
-    signUp(database, Id, password, username, function(err, result) {
+    signUp(database, email, password, username, function(err, result) {
       if (err) {
         throw err;
       }
@@ -122,7 +119,7 @@ app.post('/users/signup', function(req, res) {
   else {
     console.log('DB 연결 실패')
     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
-    res.write('데이터베이스 연결 실패')
+    res.write('데이터베이스 연결 실패\n')
     res.write('데이터베이스에 연결하지 못했습니다')
     res.end();
   }
@@ -130,6 +127,6 @@ app.post('/users/signup', function(req, res) {
 
 // 서버 실행
 app.listen(app.get('port'), function(req, res) {
-  console.log(`${port}번 포트에서 서버 실행됨`)
   connectDB()
+  console.log(`${port}번 포트에서 서버 실행됨`)
 })

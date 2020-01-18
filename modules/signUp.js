@@ -1,86 +1,50 @@
-// const signup = function(database, id, password, username, callback) {
-//     console.log('signup 호출됨 : ')
+const crypto = require('crypto')
+const secret = 'heizence'
 
-//     let users = database.collection('users')
-
-//     users.find({"id":id, "username":username}).toArray(function(err, docs) {
-//         console.log('조회된 사용자 : ', docs)
-//         if (err) {
-//             callback(err, null)
-//         }
-
-//         if (docs.length > 0) {
-//             console.log('이미 가입된 사용자입니다.')
-//             if (docs[0].id === id) {
-//                 let msg = '이미 가입된 메일 주소입니다'
-//                 console.log(msg)
-//                 callback(null, msg)
-//             }
-//             else if (docs[0].username === username) {
-//                 let msg = '이미 사용 중인 사용자 이름입니다'
-//                 console.log(msg)
-//                 callback(null, msg)
-//             }
-//         }
-//         else {
-//             users.insertMany([{"id":id, "password":password, "username":username}], function(err, result) {
-//                 if (err) {
-//                     callback(err, null);
-//                     return;
-//                 }
-        
-//                 if (result.insertedCount > 0) {
-//                     console.log('사용자 추가됨 : ' + result.insertedCount);
-//                 }
-//                 else {
-//                     console.log('추가된 레코드가 없음.')
-//                 }
-        
-//                 callback(null, result)
-//             })
-//         }
-//     })
-// }
-
-const signup = function(database, id, password, username, callback) {
+const signup = function(database, email, password, username, callback) {
     console.log('signup 호출됨 : ')
 
     let users = database.collection('users')
+    let pw = password.toString()
+    let hash = crypto.createHmac('sha256', secret).update(pw).digest('hex')
+    console.log('signUp 에서 hash 확인 : ', hash)
 
-    users.find({"id":id, "username":username}).toArray(function(err, docs) {
-        console.log('조회된 사용자 : ', docs)
+    users.find({"email":email}).toArray(function(err, docs) {
         if (err) {
             callback(err, null)
         }
 
         if (docs.length > 0) {
-            console.log('이미 가입된 사용자입니다.')
-            if (docs[0].id === id) {
-                let msg = '이미 가입된 메일 주소입니다'
-                console.log(msg)
-                callback(null, msg)
-            }
-            else if (docs[0].username === username) {
-                let msg = '이미 사용 중인 사용자 이름입니다'
-                console.log(msg)
-                callback(null, msg)
-            }
+            let msg = '이미 가입된 메일 주소입니다'
+            callback(null, msg)            
         }
         else {
-            users.insertMany([{"id":id, "password":password, "username":username}], function(err, result) {
+            users.find({"username":username}).toArray(function(err, docs) {
                 if (err) {
-                    callback(err, null);
-                    return;
+                    callback(err, null)
                 }
-        
-                if (result.insertedCount > 0) {
-                    console.log('사용자 추가됨 : ' + result.insertedCount);
+
+                if (docs.length > 0) {
+                    let msg = '이미 사용중인 이름입니다'
+                    callback(null, msg)
                 }
                 else {
-                    console.log('추가된 레코드가 없음.')
+                    users.insertMany([{"email":email, "password":hash, "username":username}], function(err, result) {
+                        if (err) {
+                            callback(err, null);
+                            return;
+                        }
+                
+                        if (result.insertedCount > 0) {
+                            console.log('사용자 추가됨 : ' + result.insertedCount);
+                        }
+                        else {
+                            console.log('추가된 레코드가 없음.')
+                        }
+                
+                        callback(null, result)
+                    })
                 }
-        
-                callback(null, result)
             })
         }
     })
