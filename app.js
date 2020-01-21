@@ -29,7 +29,7 @@ app.use(expressSession({
 
 app.get('/', (req, res) => {
   res.status(200).send('success')
-  console.log(`${port}번 포트에서 서버 실행됨`)
+  console.log(`${port}번 포트에서 서버 실행됨\n`)
 })
 
 // DB 연결
@@ -37,7 +37,7 @@ function connectDB() {
   mongoose.Promise = global.Promise
 
   mongoose.connect(databaseUrl).then(() => {
-    console.log('데이터베이스에 연결되었습니다')
+    console.log('데이터베이스에 연결되었습니다\n')
   }).catch(err => {
     console.error(err)
   })
@@ -51,5 +51,5 @@ app.use(signout)
 // 서버 실행
 app.listen(app.get('port'), function(req, res) {
   connectDB()
-  console.log(`${port}번 포트에서 서버 실행됨`)
+  console.log(`${port}번 포트에서 서버 실행됨\n`)
 })

@@ -29,7 +29,7 @@ router.route('/users/signin').post(function(req, res) {
     let email = req.body.email
     let password = req.body.password
     let sess = req.session 
-
+    
     if (userModel) {
         console.log('DB 연결됨')
         authUser(email, password, function(err, docs) {
@@ -37,38 +37,32 @@ router.route('/users/signin').post(function(req, res) {
                 throw err;
             }
 
-            if (docs) {
-                let username = docs[0].username;
-                sess.email = email
-                
-                console.log('로그인 성공')                
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
-                res.write('Login Success!\n')
-                res.write('Email : ' + email + '\n') 
-                res.write('Password : ' + password + '\n')
-                res.write('Username : ' + username)
-                res.write('세션 : ' + sess)
-                res.end()                
-               
-               //res.status(200).send(result)
-            }
             else {
-                console.log('로그인 실패')
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
-                res.write('Login Failed!' + '\n')
-                res.write('Check your Email and password again!' + '\n')
-                res.end();
+              if (docs) {
+                  sess.email = email
+                  
+                  console.log('로그인 성공\n')  
+                  res.status(200).send(docs[0])
+              }
+              else {
+                  console.log('로그인 실패\n')
+                  res.status(201).send()
+              }
             }
         })
     }
     else {
-        console.log('DB 연결 실패')
-        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
-        res.write('데이터베이스 연결 실패\n')
-        res.write('데이터베이스에 연결하지 못했습니다')
-        res.end();
+        console.log('DB 연결 실패\n')
+        res.status(404).send('데이터베이스에 연결하지 못했습니다')
     }
 })
 
+router.route('/users/signin').get(function(req, res) {
+  if (req.session) {
+    res.render('users/signin', {
+      session: req.session
+    })
+  }
+})
 
 module.exports = router

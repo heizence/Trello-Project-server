@@ -25,12 +25,6 @@ const signUp = function(email, password, username, callback) {
                 if (err) {
                     callback(err, null)
                 }
-
-                if (docs.length > 0) {
-                    let msg = '이미 사용중인 이름입니다\n'
-                    console.log(msg)
-                    callback(null, msg)
-                }
                 else {
                     let newUser = new userModel({
                         "email": email, 
@@ -54,41 +48,57 @@ const signUp = function(email, password, username, callback) {
 
 router.route('/users/signup').post(function(req, res) {
     console.log('회원가입 요청 받음 : ', req.body)
-  
-    let email = req.body.email
-    let password = req.body.password
-    let username = req.body.username
+
+    // let email = req.body.email
+    // let password = req.body.password
+    // let username = req.body.username
+    let { email, password, username } = req.body
   
     if (userModel) {
       console.log('DB 연결됨')
       signUp(email, password, username, function(err, result) {
+        
         if (err) {
           throw err;
         }
   
         if (!result) {
-          res.writeHead('200', {'Content-Type':'text/html;charset=utf-8'})
-          res.write('회원가입 성공!\n')
-          res.write('Email : ', email, '\n')
-          res.write('password : ', password, '\n')
-          res.write('username : ', username, '\n')
-          res.end();
+            console.log('회원가입 성공!\n')
+            res.status(200).send('회원가입이 완료되었습니다!')
         }
         else {
-          res.writeHead('200', {'Content-Type':'text/html;charset=utf-8'})
-          res.write('회원가입 실패!\n')
-          res.write(result)
-          res.end();
+            console.log('회원가입 실패!\n')
+            res.status(201).send(result)
         }    
       })
     }
     else {
       console.log('DB 연결 실패')
-      res.writeHead('200', {'Content-Type':'text/html;charset=utf8'})
-      res.write('데이터베이스 연결 실패\n')
-      res.write('데이터베이스에 연결하지 못했습니다')
-      res.end();
+      res.status(404).send('데이터베이스에 연결하지 못했습니다')
     }
+})
+
+router.route('/users/checkusername').post(function(req, res) {
+    console.log('회원가입 시 사용자 이름 확인 요청 받음 : ', req.body)
+
+    let username = req.body.username
+    let isUnique = false
+
+    userModel.find({"username":username}, function(err, docs) {
+        if (err) {
+            console.error(err)
+        }
+
+        if (docs.length > 0) {
+            console.log('사용중인 이름')            
+        }
+        else {
+            console.log('사용 가능한 이름')
+            isUnique = true
+        }
+
+        res.status(200).send(isUnique)
+    })
 })
 
 module.exports = router
