@@ -11,6 +11,12 @@ const mongoose = require('mongoose')
 const signout = require('./routes/signout')
 const signin = require('./routes/signin')
 const signup = require('./routes/signup')
+const mypage = require('./routes/mypage')
+
+const getBoard = require('./routes/getBoard')
+const addBoard = require('./routes/addBoard')
+const modifyBoard = require('./routes/modifyBoard')
+const deleteBoard = require('./routes/deleteBoard')
 
 const app = express();
 const port = 3001;
@@ -47,6 +53,12 @@ function connectDB() {
 app.use(signin)
 app.use(signup)
 app.use(signout)
+app.use(mypage)
+
+app.use(getBoard)
+app.use(addBoard)
+app.use(modifyBoard)
+app.use(deleteBoard)
 
 // 서버 실행
 app.listen(app.get('port'), function(req, res) {

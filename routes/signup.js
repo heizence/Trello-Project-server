@@ -5,8 +5,6 @@ const secret = 'heizence'
 const userModel = require('../models/users')
 
 const signUp = function(email, password, username, callback) {
-    console.log('signup 호출됨')
-    
     let pw = password.toString()
     let hash = crypto.createHmac('sha256', secret).update(pw).digest('hex')
 
@@ -47,11 +45,8 @@ const signUp = function(email, password, username, callback) {
 }
 
 router.route('/users/signup').post(function(req, res) {
-    console.log('회원가입 요청 받음 : ', req.body)
+    console.log('회원가입 요청 받음 ')
 
-    // let email = req.body.email
-    // let password = req.body.password
-    // let username = req.body.username
     let { email, password, username } = req.body
   
     if (userModel) {
@@ -79,7 +74,7 @@ router.route('/users/signup').post(function(req, res) {
 })
 
 router.route('/users/checkusername').post(function(req, res) {
-    console.log('회원가입 시 사용자 이름 확인 요청 받음 : ', req.body)
+    console.log('사용자 이름 중복확인 요청 받음')
 
     let username = req.body.username
     let isUnique = false
@@ -90,7 +85,7 @@ router.route('/users/checkusername').post(function(req, res) {
         }
 
         if (docs.length > 0) {
-            console.log('사용중인 이름')            
+            console.log('사용 중인 이름')            
         }
         else {
             console.log('사용 가능한 이름')

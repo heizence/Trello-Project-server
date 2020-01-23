@@ -24,7 +24,7 @@ const authUser = function(email, password, callback) {
 }
 
 router.route('/users/signin').post(function(req, res) {
-    console.log('login 요청 받음 : ', req.body)
+    console.log('login 요청 받음')
 
     let email = req.body.email
     let password = req.body.password
