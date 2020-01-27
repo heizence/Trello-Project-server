@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const crypto = require('crypto')
 const secret = 'heizence'
-const userModel = require('../models/users')
+const userModel = require('../../models/users')
 
 const signUp = function(email, password, username, callback) {
     let pw = password.toString()

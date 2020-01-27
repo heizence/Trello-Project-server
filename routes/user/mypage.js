@@ -2,7 +2,10 @@ const express = require('express')
 const router = express.Router()
 const crypto = require('crypto')
 const secret = 'heizence'
-const userModel = require('../models/users')
+const userModel = require('../../models/users')
+const boardModel = require('../../models/boards')
+const listModel = require('../../models/lists')
+const cardModel = require('../../models/cards')
 
 router.route('/users/mypage').put(function(req, res) {
     console.log('회원 정보 수정 요청 받음')
@@ -47,6 +50,33 @@ router.route('/users/mypage').post(function(req, res) {
                 console.error(err)
             }
             else {
+                boardModel.deleteMany({ email }, function(boardError, boardObj) {
+                    if (boardError) {
+                        console.error(boardError)
+                    }
+                    else {
+                        console.log('회원 탈퇴 시 보드 삭제 : ', boardObj)
+                    }
+                })
+
+                listModel.deleteMany({ email }, function(listError, listObj) {
+                    if (listError) {
+                        console.error(listError)
+                    }
+                    else {
+                        console.log('회원 탈퇴 시 리스트 삭제 : ', listObj)
+                    }
+                })
+
+                cardModel.deleteMany({ email }, function(cardError, cardObj) {
+                    if (cardError) {
+                        console.error(cardError)
+                    }
+                    else {
+                        console.log('회원 탈퇴 시 카드 삭제 : ', cardObj)
+                    }
+                })
+
                 if (req.session) { 
                     req.session.destroy(err => {
                         if (err) {
@@ -59,7 +89,7 @@ router.route('/users/mypage').post(function(req, res) {
                 }
 
                 res.status(200).send()
-                console.log(obj, '회원 탈퇴됨.\n')                
+                console.log('회원 탈퇴됨.', obj, '\n')                
             }
         })
     }

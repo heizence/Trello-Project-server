@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 let listSchema = mongoose.Schema({
-    userEmail: { type: String, required: true },
+    email: { type: String, required: true },
     boardTitle: { type: String, required: true },
     listTitle: { type: String, required: true }
 })

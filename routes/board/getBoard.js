@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const boardModel = require('../models/boards')
+const boardModel = require('../../models/boards')
 
 router.route('/users/boardData/getBoard').get(function(req, res) {
-
+    console.log('보드 데이터 전송 요청. 사용자 이메일 : ', req.query.user)
+    
     if (boardModel) {
         console.log('DB 연결됨')
         
-        boardModel.find(function(err, results) {
+        boardModel.find({email: req.query.user}, function(err, results) {
             if (err) {
                 console.error(err)
             }
@@ -15,6 +16,10 @@ router.route('/users/boardData/getBoard').get(function(req, res) {
             if (results.length > 0) {
                 res.status(200).send(results)
                 console.log('가져온 보드 데이터 : ', results, '\n')
+            }
+            else {
+                res.status(201).send('저장된 보드 없음\n')
+                console.log('저장된 보드 없음\n')
             }
         })        
     }

@@ -1,22 +1,22 @@
 const express = require('express')
 const router = express.Router()
-const boardModel = require('../models/boards')
+const cardModel = require('../../models/cards')
 
-router.route('/users/boardData/deleteBoard').post(function(req, res) {
-    console.log('보드 데이터 전송 요청 : ', req.body)
+router.route('/users/cardData/deleteCard').post(function(req, res) {
+    console.log('카드 데이터 삭제 요청 : ', req.body)
 
-    let { email, boardTitle } = req.body
+    let { email, boardTitle, listTitle, contentTitle } = req.body
 
-    if (boardModel) {
+    if (cardModel) {
         console.log('DB 연결됨')
         
-        boardModel.deleteOne({ email: email, boardTitle: boardTitle }, function(err, obj) {
+        cardModel.deleteOne({ email, boardTitle, listTitle, contentTitle }, function(err, obj) {
             if (err) {
                 console.error(err)
             }
             else {                
-                console.log(obj, '보드 수정됨.\n')
                 res.status(200).send()
+                console.log('카드 삭제됨 : ', obj, '\n')
             }
         })
     }

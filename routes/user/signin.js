@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const crypto = require('crypto')
 const secret = 'heizence'
-const userModel = require('../models/users')
+const userModel = require('../../models/users')
 
 const authUser = function(email, password, callback) {
     let pw = password.toString()
@@ -40,6 +40,7 @@ router.route('/users/signin').post(function(req, res) {
             else {
               if (docs) {
                   sess.email = email
+                  userEmail = email
                   
                   console.log('로그인 성공\n')  
                   res.status(200).send(docs[0])
@@ -64,5 +65,6 @@ router.route('/users/signin').get(function(req, res) {
     })
   }
 })
+
 
 module.exports = router
