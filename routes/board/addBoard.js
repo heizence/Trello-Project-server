@@ -5,14 +5,12 @@ const boardModel = require('../../models/boards')
 router.route('/users/boardData/addBoard').post(function(req, res) {
     console.log('보드 데이터 전송 요청 : ', req.body)
 
-    let { email, boardTitle } = req.body
+    let { email, newBoardTitle } = req.body
 
-    if (boardModel) {
-        console.log('DB 연결됨')
-        
+    if (boardModel) {        
         let newBoard = new boardModel({
             email,
-            boardTitle
+            boardTitle: newBoardTitle
         })
 
         newBoard.save(function(err) {
@@ -28,7 +26,7 @@ router.route('/users/boardData/addBoard').post(function(req, res) {
 
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

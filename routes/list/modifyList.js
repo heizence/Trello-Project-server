@@ -9,9 +9,7 @@ router.route('/users/listData/modifyList').put(function(req, res) {
     let { email, boardTitle, oldListTitle, newListTitle } = req.body
 
     if (listModel) {
-        console.log('DB 연결됨')
-        
-        let condition = { email: email, boardTitle: boardTitle, listTitle: oldListTitle }
+        let condition = { email, boardTitle, listTitle: oldListTitle }
         let update = {$set : { listTitle: newListTitle }}
 
         listModel.findOneAndUpdate(condition, update, function(err) {
@@ -35,7 +33,7 @@ router.route('/users/listData/modifyList').put(function(req, res) {
     }
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

@@ -43,8 +43,6 @@ router.route('/users/mypage').post(function(req, res) {
     let email = req.body.email
 
     if (userModel) {
-        console.log('DB 연결됨')
-        
         userModel.deleteOne({ email: email }, function(err, obj) {
             if (err) {
                 console.error(err)
@@ -95,7 +93,7 @@ router.route('/users/mypage').post(function(req, res) {
     }
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

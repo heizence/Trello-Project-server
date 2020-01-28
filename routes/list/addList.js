@@ -8,8 +8,6 @@ router.route('/users/listData/addList').post(function(req, res) {
     let { email, boardTitle, newListTitle } = req.body
 
     if (listModel) {
-        console.log('DB 연결됨')
-        
         let newList = new listModel({
             "email": email,
             "boardTitle": boardTitle,
@@ -29,7 +27,7 @@ router.route('/users/listData/addList').post(function(req, res) {
 
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

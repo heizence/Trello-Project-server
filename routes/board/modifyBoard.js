@@ -10,8 +10,6 @@ router.route('/users/boardData/modifyBoard').put(function(req, res) {
     let { email, oldBoardTitle, newBoardTitle } = req.body
 
     if (boardModel) {
-        console.log('DB 연결됨')
-        
         let condition = { email, boardTitle: oldBoardTitle }
         let update = {$set : { boardTitle: newBoardTitle }}
 
@@ -25,7 +23,7 @@ router.route('/users/boardData/modifyBoard').put(function(req, res) {
                         console.error(listError)
                     }
                     else {
-                        console.log('보드 수정 시 보드 내 리스트 수정 : ', listObj)
+                        //console.log('보드 수정 시 보드 내 리스트 수정 : ', listObj)
                     }
                 })
                 
@@ -34,7 +32,7 @@ router.route('/users/boardData/modifyBoard').put(function(req, res) {
                         console.error(cardError)
                     }
                     else {
-                        console.log('보드 수정 시 보드 내 카드 수정 : ', cardObj)
+                        //console.log('보드 수정 시 보드 내 카드 수정 : ', cardObj)
                     }
                 })
 
@@ -45,7 +43,7 @@ router.route('/users/boardData/modifyBoard').put(function(req, res) {
     }
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

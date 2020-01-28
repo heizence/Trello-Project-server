@@ -24,14 +24,13 @@ const authUser = function(email, password, callback) {
 }
 
 router.route('/users/signin').post(function(req, res) {
-    console.log('login 요청 받음')
+    console.log('login 요청 받음 : ', req.body)
 
     let email = req.body.email
     let password = req.body.password
     let sess = req.session 
     
     if (userModel) {
-        console.log('DB 연결됨')
         authUser(email, password, function(err, docs) {
             if (err) {
                 throw err;
@@ -54,7 +53,7 @@ router.route('/users/signin').post(function(req, res) {
     }
     else {
         console.log('DB 연결 실패\n')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다')
+        res.status(404).send()
     }
 })
 

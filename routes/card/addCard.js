@@ -5,17 +5,15 @@ const cardModel = require('../../models/cards')
 router.route('/users/cardData/addCard').post(function(req, res) {
     console.log('카드 데이터 추가 요청 : ', req.body)
 
-    let { email, boardTitle, listTitle, newContentTitle } = req.body
+    let { email, boardTitle, listTitle, newContentTitle, contentText } = req.body
 
     if (cardModel) {
-        console.log('DB 연결됨')
-        
         let newCard = new cardModel({
             "email": email,
             "boardTitle": boardTitle,
             "listTitle": listTitle,
             "contentTitle": newContentTitle,
-            "contentText": ''
+            "contentText": contentText
         })
 
         newCard.save(function(err) {
@@ -31,7 +29,7 @@ router.route('/users/cardData/addCard').post(function(req, res) {
 
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

@@ -7,9 +7,7 @@ router.route('/users/cardData/deleteCard').post(function(req, res) {
 
     let { email, boardTitle, listTitle, contentTitle } = req.body
 
-    if (cardModel) {
-        console.log('DB 연결됨')
-        
+    if (cardModel) {        
         cardModel.deleteOne({ email, boardTitle, listTitle, contentTitle }, function(err, obj) {
             if (err) {
                 console.error(err)
@@ -22,7 +20,7 @@ router.route('/users/cardData/deleteCard').post(function(req, res) {
     }
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

@@ -50,7 +50,6 @@ router.route('/users/signup').post(function(req, res) {
     let { email, password, username } = req.body
   
     if (userModel) {
-      console.log('DB 연결됨')
       signUp(email, password, username, function(err, result) {
         
         if (err) {
@@ -69,7 +68,7 @@ router.route('/users/signup').post(function(req, res) {
     }
     else {
       console.log('DB 연결 실패')
-      res.status(404).send('데이터베이스에 연결하지 못했습니다')
+      res.status(404).send()
     }
 })
 

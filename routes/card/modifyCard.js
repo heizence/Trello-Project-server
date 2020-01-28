@@ -9,10 +9,18 @@ router.route('/users/cardData/modifyCard').put(function(req, res) {
     newContentTitle, contentText } = req.body
 
     if (cardModel) {
-        console.log('DB 연결됨')
-        
         let condition = { email, boardTitle, listTitle, contentTitle: oldContentTitle }
-        let update = {$set : { contentTitle: newContentTitle, contentText }}
+        
+        let update
+
+        // 카드 내용 변경 시
+        if (contentText) {
+            update = {$set : { contentTitle: newContentTitle || oldContentTitle, contentText }}
+        }
+        // 카드 제목만 변경 시
+        else {
+            update = {$set : { contentTitle: newContentTitle || oldContentTitle }}
+        }
 
         cardModel.findOneAndUpdate(condition, update, function(err) {
             if (err) {
@@ -26,7 +34,7 @@ router.route('/users/cardData/modifyCard').put(function(req, res) {
     }
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 

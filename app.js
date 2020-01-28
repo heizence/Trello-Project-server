@@ -33,6 +33,9 @@ const addCard = require('./routes/card/addCard')
 const modifyCard = require('./routes/card/modifyCard')
 const deleteCard = require('./routes/card/deleteCard')
 
+// 보드 조립하기
+const getBoardData = require('./routes/user/getBoardData')
+
 const app = express();
 const port = 3001;
 
@@ -47,11 +50,6 @@ app.use(expressSession({
   resave: true,
   saveUninitialized: true
 }))
-
-// app.get('/', (req, res) => {
-//   res.status(200).send('success')
-//   console.log(`${port}번 포트에서 서버 실행됨\n`)
-// })
 
 // DB 연결
 function connectDB() {
@@ -78,8 +76,11 @@ app.use(getList, addList, modifyList, deleteList)
 // 카드
 app.use(getCard, addCard, modifyCard, deleteCard)
 
+// 보드 조립
+app.use(getBoardData)
+
 // 서버 실행
-app.listen(app.get('port'), function(req, res) {
+app.listen(app.get('port'), function() {
   connectDB()
   console.log(`${port}번 포트에서 서버 실행됨\n`)
 })

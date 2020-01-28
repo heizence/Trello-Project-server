@@ -9,15 +9,13 @@ router.route('/users/boardData/deleteBoard').post(function(req, res) {
 
     let { email, boardTitle } = req.body
 
-    if (boardModel) {
-        console.log('DB 연결됨')
-        
+    if (boardModel) {        
         boardModel.deleteOne({ email, boardTitle }, function(err, obj) {
             if (err) {
                 console.error(err)
             }
             else {  
-                listModel.deleteMany({ email }, function(listError, listObj) {
+                listModel.deleteMany({ email, boardTitle }, function(listError, listObj) {
                     if (listError) {
                         console.error(listError)
                     }
@@ -26,7 +24,7 @@ router.route('/users/boardData/deleteBoard').post(function(req, res) {
                     }
                 })
                 
-                cardModel.deleteMany({ email }, function(cardError, cardObj) {
+                cardModel.deleteMany({ email, boardTitle }, function(cardError, cardObj) {
                     if (cardError) {
                         console.error(cardError)
                     }
@@ -41,7 +39,7 @@ router.route('/users/boardData/deleteBoard').post(function(req, res) {
     }
     else {
         console.log('DB 연결 실패')
-        res.status(404).send('데이터베이스에 연결하지 못했습니다\n')
+        res.status(404).send()
     }
 })
 
