@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 let boardSchema = mongoose.Schema({
-    email: { type: String, required: true },
-    boardTitle: { type: String, required: true }
+    boardTitle: { type: String, required: true },
+    lists: [ { type: mongoose.Schema.Types.ObjectId, ref: "lists" } ]
 })
 
-let boardModel = mongoose.model("boards", boardSchema)
+let boards = mongoose.model("boards", boardSchema)
 
-module.exports = boardModel;
+module.exports = boards;

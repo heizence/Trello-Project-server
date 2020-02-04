@@ -4,7 +4,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
 
-const databaseUrl = 'mongodb://localhost:27017/local';
+const databaseUrl = 'mongodb://localhost:27017/test';
+
 const mongoose = require('mongoose')
 
 // 라우터
@@ -14,27 +15,23 @@ const signout = require('./routes/user/signout')
 const signin = require('./routes/user/signin')
 const signup = require('./routes/user/signup')
 const mypage = require('./routes/user/mypage')
-
-// 보드 
-const getBoard = require('./routes/board/getBoard')
-const addBoard = require('./routes/board/addBoard')
-const modifyBoard = require('./routes/board/modifyBoard')
-const deleteBoard = require('./routes/board/deleteBoard')
-
-// 리스트
-const getList = require('./routes/list/getList')
-const addList = require('./routes/list/addList')
-const modifyList = require('./routes/list/modifyList')
-const deleteList = require('./routes/list/deleteList')
-
-// 카드
-const getCard = require('./routes/card/getCard')
-const addCard = require('./routes/card/addCard')
-const modifyCard = require('./routes/card/modifyCard')
-const deleteCard = require('./routes/card/deleteCard')
+const getUserList = require('./routes/user/getUserList')
 
 // 보드 조립하기
-const getBoardData = require('./routes/user/getBoardData')
+const getBoardData = require('./routes/handleData/getBoardData')
+
+// 트리 구조 DB 적용
+const addBoard = require('./routes/handleData/addBoard')
+const modifyBoard = require('./routes/handleData/modifyBoard')
+const deleteBoard = require('./routes/handleData/deleteBoard')
+
+const addList = require('./routes/handleData/addList')
+const modifyList = require('./routes/handleData/modifyList')
+const deleteList = require('./routes/handleData/deleteList')
+
+const addCard = require('./routes/handleData/addCard')
+const modifyCard = require('./routes/handleData/modifyCard')
+const deleteCard = require('./routes/handleData/deleteCard')
 
 const app = express();
 const port = 3001;
@@ -55,8 +52,10 @@ app.use(expressSession({
 function connectDB() {
   mongoose.Promise = global.Promise
 
-  mongoose.connect(databaseUrl).then(() => {
-    console.log('데이터베이스에 연결되었습니다\n')
+  let url = databaseUrl
+
+  mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+    console.log(`데이터베이스에 연결되었습니다. URL : ${url}\n`)
   }).catch(err => {
     console.error(err)
   })
@@ -65,19 +64,14 @@ function connectDB() {
 // 라우터 적용
 
 // 사용자 정보
-app.use(signin, signup, signout, mypage)
+app.use(signin, signup, signout, mypage, getUserList)
 
-// 보드
-app.use(getBoard, addBoard, modifyBoard, deleteBoard)
-
-// 리스트
-app.use(getList, addList, modifyList, deleteList)
-
-// 카드
-app.use(getCard, addCard, modifyCard, deleteCard)
-
-// 보드 조립
-app.use(getBoardData)
+// 보드 데이터
+app.use(addBoard, modifyBoard, deleteBoard,
+  addList, modifyList, deleteList,
+  addCard, modifyCard, deleteCard,
+  getBoardData
+)
 
 // 서버 실행
 app.listen(app.get('port'), function() {

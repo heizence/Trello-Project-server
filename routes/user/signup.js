@@ -27,7 +27,8 @@ const signUp = function(email, password, username, callback) {
                     let newUser = new userModel({
                         "email": email, 
                         "password": hash, 
-                        "username": username
+                        "username": username,
+                        "boards": []
                     })
 
                     newUser.save(function(err) {
@@ -35,7 +36,7 @@ const signUp = function(email, password, username, callback) {
                             callback(err, null)
                             return;
                         }
-                        console.log('신규 사용자 추가됨\n')
+                        console.log('신규 사용자 추가됨.\n')
                         callback(null, null)
                     })
                 }
@@ -57,18 +58,19 @@ router.route('/users/signup').post(function(req, res) {
         }
   
         if (!result) {
-            console.log('회원가입 성공!\n')
+            console.log('회원가입 성공.')
+            console.log('요청 처리 완료.\n')
             res.status(200).send('회원가입이 완료되었습니다!')
         }
         else {
             console.log('회원가입 실패!\n')
-            res.status(201).send(result)
+            res.status(500).send(result)
         }    
       })
     }
     else {
       console.log('DB 연결 실패')
-      res.status(404).send()
+      res.status(500).send()
     }
 })
 

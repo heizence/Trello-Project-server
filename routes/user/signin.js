@@ -28,7 +28,7 @@ router.route('/users/signin').post(function(req, res) {
 
     let email = req.body.email
     let password = req.body.password
-    let sess = req.session 
+    let sess = req.session
     
     if (userModel) {
         authUser(email, password, function(err, docs) {
@@ -56,14 +56,5 @@ router.route('/users/signin').post(function(req, res) {
         res.status(404).send()
     }
 })
-
-router.route('/users/signin').get(function(req, res) {
-  if (req.session) {
-    res.render('users/signin', {
-      session: req.session
-    })
-  }
-})
-
 
 module.exports = router
