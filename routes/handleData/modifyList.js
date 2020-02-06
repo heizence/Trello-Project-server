@@ -17,11 +17,11 @@ router.route('/users/listData/modifyList').put(function(req, res) {
             console.log('수정할 리스트\n')
             console.log(obj)
             console.log('리스트 수정됨.\n')
-            res.status(200).send('리스트 수정됨.')
+            res.status(200).send(update['$set'])
         }
         else {
             console.log('해당되는 리스트를 찾지 못했습니다.\n')
-            res.status(404).send('해당되는 리스트를 찾지 못했습니다.')
+            res.status(201).send('해당되는 리스트를 찾지 못했습니다.')
         }
     })
 })

@@ -17,7 +17,7 @@ router.route('/users/signout').post(function(req, res) {
       })
     } else {
       console.log('세션 없음\n')
-      res.status(200).send('세션 없음')
+      res.status(201).send('세션 없음')
     }
 })
 

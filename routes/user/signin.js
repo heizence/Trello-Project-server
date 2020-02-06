@@ -53,7 +53,7 @@ router.route('/users/signin').post(function(req, res) {
     }
     else {
         console.log('DB 연결 실패\n')
-        res.status(404).send()
+        res.status(500).send()
     }
 })
 

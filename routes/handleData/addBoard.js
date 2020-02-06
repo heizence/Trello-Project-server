@@ -32,7 +32,7 @@ router.route('/users/boardData/addBoard').post(function(req, res) {
                 console.log('사용자의 보드 정보 업데이트 됨.')
                 console.log('새로운 보드 추가됨.')
                 console.log('요청 처리 완료.\n')
-                res.status(201).send('새로운 보드 추가됨.')
+                res.status(200).send(boardObj)
             }
             else {
                 console.log('사용자 보드 정보를 업데이트 하지 못했습니다.\n')

@@ -32,11 +32,11 @@ router.route('/users/listData/addList').post(function(req, res) {
                 console.log('보드의 리스트 정보 업데이트 됨.')
                 console.log('새로운 리스트 추가됨.')
                 console.log('요청 처리 완료.\n')
-                res.status(201).send('새로운 리스트 추가됨.')
+                res.status(200).send(listObj)
             }
             else {
                 console.log('보드의 리스트 정보를 업데이트 하지 못했습니다.\n')
-                res.status(500).send('보드의 리스트 정보를 업데이트 하지 못했습니다.')
+                res.status(201).send('보드의 리스트 정보를 업데이트 하지 못했습니다.')
             }
         })
     })

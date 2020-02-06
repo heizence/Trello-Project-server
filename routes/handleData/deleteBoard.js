@@ -14,9 +14,9 @@ const cardModel = require('../../models/cards')
 */
 
 router.route('/users/boardData/deleteBoard').delete(function(req, res) {
-    console.log('보드 삭제 요청 : ', req.query.id)
+    console.log('보드 삭제 요청 : ', req.query.board)
 
-    let boardId = req.query.id
+    let boardId = req.query.board
 
     boardModel.findByIdAndRemove(boardId, function(err, boardObj) {
         if (err) throw err
@@ -58,12 +58,12 @@ router.route('/users/boardData/deleteBoard').delete(function(req, res) {
                     })
                 }
                 console.log('보드 삭제됨.')
-                res.status(201).send('보드 삭제됨.')
+                res.status(200).send('보드 삭제됨.')
             })
         }
         else {
             console.log('해당되는 보드를 찾지 못했습니다.\n')
-            res.status(404).send('해당되는 보드를 찾지 못했습니다.')
+            res.status(201).send('해당되는 보드를 찾지 못했습니다.')
         }
     })
 })

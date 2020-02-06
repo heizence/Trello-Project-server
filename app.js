@@ -8,8 +8,6 @@ const databaseUrl = 'mongodb://localhost:27017/test';
 
 const mongoose = require('mongoose')
 
-// 라우터
-
 // 사용자 관련 정보
 const signout = require('./routes/user/signout')
 const signin = require('./routes/user/signin')
@@ -20,7 +18,6 @@ const getUserList = require('./routes/user/getUserList')
 // 보드 조립하기
 const getBoardData = require('./routes/handleData/getBoardData')
 
-// 트리 구조 DB 적용
 const addBoard = require('./routes/handleData/addBoard')
 const modifyBoard = require('./routes/handleData/modifyBoard')
 const deleteBoard = require('./routes/handleData/deleteBoard')
@@ -60,8 +57,6 @@ function connectDB() {
     console.error(err)
   })
 }
-
-// 라우터 적용
 
 // 사용자 정보
 app.use(signin, signup, signout, mypage, getUserList)

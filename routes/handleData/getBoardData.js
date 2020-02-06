@@ -4,9 +4,9 @@ const router = express.Router()
 const userModel = require('../../models/users')
 
 router.route('/users/getBoardData').get(function(req, res) {
-    console.log('사용자 전체 보드 데이터 전송 요청 : ', req.query.id)
+    console.log('사용자 전체 보드 데이터 전송 요청 : ', req.query.user)
 
-    userModel.findById(req.query.id).populate({
+    userModel.findById(req.query.user).populate({
         path: 'boards', populate: { path: 'lists', populate: { path: 'cards' } } 
     }).exec(function(err, user) {
         if (err) {
@@ -14,7 +14,7 @@ router.route('/users/getBoardData').get(function(req, res) {
         }
         else {
             console.log('사용자 : ', user)
-            res.status(200).send(user)            
+            res.status(201).send(user)            
         }
     })
 })

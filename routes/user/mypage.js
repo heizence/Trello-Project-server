@@ -14,29 +14,21 @@ router.route('/users/mypage/modify').put(function(req, res) {
 
     let pw = password.toString()
     let hash = crypto.createHmac('sha256', secret).update(pw).digest('hex')
+      
+    let condition = { email: email }
+    let update = {$set: {password: hash, username: username} }
     
-    if (userModel) {
-        let condition = { email: email }
-        let update = {$set: {password: hash, username: username} }
-        
-        userModel.findOneAndUpdate(condition, update, function(err) {
-            if (err) {
-                console.error(err)
-            }
-            else {
-                res.status(200).send('회원 정보 수정됨.')
-                console.log('회원 정보 수정됨.\n')
-            }
-        })
-    }
-    else {
-        console.log('DB 연결 실패')
-        res.status(500).send('데이터베이스에 연결하지 못했습니다\n')
-    }
+    userModel.findOneAndUpdate(condition, update, function(err) {
+        if (err) throw err
+        else {
+            res.status(200).send('회원 정보 수정됨.')
+            console.log('회원 정보 수정됨.\n')
+        }
+    })    
 })
 
 router.route('/users/mypage/secession').delete(function(req, res) {
-    console.log('회원 탈퇴 요청 : ', req.query.id)
+    console.log('회원 탈퇴 요청 : ', req.query.user)
 
     if (req.session) {
         req.session.destroy(err => {
@@ -49,7 +41,7 @@ router.route('/users/mypage/secession').delete(function(req, res) {
         })
     }
 
-    let userId = req.query.id
+    let userId = req.query.user
 
     userModel.findByIdAndRemove(userId, function(err, userObj) {
         if (err) throw err
@@ -106,7 +98,7 @@ router.route('/users/mypage/secession').delete(function(req, res) {
                     })
                 })
             }     
-            res.status(201).send('회원 탈퇴됨.')   
+            res.status(200).send('회원 탈퇴됨.')   
         }
 
         else {

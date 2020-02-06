@@ -62,10 +62,10 @@ router.route('/users/signup').post(function(req, res) {
             console.log('요청 처리 완료.\n')
             res.status(200).send('회원가입이 완료되었습니다!')
         }
-        else {
-            console.log('회원가입 실패!\n')
-            res.status(500).send(result)
-        }    
+        // else {
+        //     console.log('회원가입 실패!\n')
+        //     res.status(500).send(result)
+        // }    
       })
     }
     else {

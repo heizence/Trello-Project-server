@@ -12,9 +12,9 @@ const cardModel = require('../../models/cards')
 */
 
 router.route('/users/listData/deleteList').delete(function(req, res) {
-    console.log('리스트 삭제 요청 : ', req.query.id)
+    console.log('리스트 삭제 요청 : ', req.query.list)
 
-    let listId = req.query.id
+    let listId = req.query.list
 
     listModel.findByIdAndRemove(listId, function(err, listObj) {
         if (err) throw err
@@ -39,13 +39,13 @@ router.route('/users/listData/deleteList').delete(function(req, res) {
                     })
                 }
                 console.log('리스트 삭제됨.\n')
-                res.status(201).send('리스트 삭제됨.')
+                res.status(200).send('리스트 삭제됨.')
                 
             })
         }
         else {
             console.log('해당되는 리스트를 찾지 못했습니다.\n')
-            res.status(404).send('해당되는 리스트를 찾지 못했습니다.')
+            res.status(201).send('해당되는 리스트를 찾지 못했습니다.')
         }
     })
 })

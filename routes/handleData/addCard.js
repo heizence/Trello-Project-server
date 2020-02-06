@@ -13,7 +13,7 @@ router.route('/users/cardData/addCard').post(function(req, res) {
 
     let newCard = new cardModel({
         cardTitle,
-        "contentText" : contentText || ""
+        contentText
     })
 
     newCard.save(function(err, cardObj) {
@@ -32,7 +32,7 @@ router.route('/users/cardData/addCard').post(function(req, res) {
                 console.log('리스트의 카드 정보 업데이트 됨.')
                 console.log('새로운 카드 추가됨.')
                 console.log('요청 처리 완료.\n')
-                res.status(201).send('새로운 카드 추가됨.')
+                res.status(200).send(cardObj)
             }
             else {
                 console.log('리스트의 카드 정보를 업데이트 하지 못했습니다.\n')

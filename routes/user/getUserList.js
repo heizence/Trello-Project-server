@@ -14,13 +14,13 @@ router.route(`/users/userlist`).get(function(req, res) {
             if (docs) {
                 console.log('사용자 목록 : ', docs)
                 console.log('조회 완료.\n')
-                res.status(200).send(docs)
+                res.status(201).send(docs)
             }
         })
     }
     else {
         console.log('DB 연결 실패\n')
-        res.status(404).send()
+        res.status(500).send()
     }
 })
 
