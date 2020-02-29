@@ -5,13 +5,5 @@
 ## Stack
 Node.js, mongoDB, mongoose
 
-## Start
-
-1.npm 설치
-```npm install```
-
-2.mongoDB 실행
-```mongod start```
-
-3.서버 실행
-```node app.js``` 
+## 보드 CRUD 기능 구현 블로깅
+https://heizence6626.tistory.com/4
