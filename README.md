@@ -7,8 +7,11 @@ Node.js, mongoDB, mongoose
 
 ## Start
 
-### npm 설치
+1.npm 설치
 ```npm install```
 
-### 서버 실행
+2.mongoDB 실행
+```mongod start```
+
+3.서버 실행
 ```node app.js``` 
